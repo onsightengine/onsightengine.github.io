@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>EyeGL • WebGL Graphics Library</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+        <link rel="icon" type="image/png" href="../files/logo/favicon.png" />
+        <link rel="stylesheet" href="./main.css" />
+    </head>
+    <body>
+
+        <div class="Side">
+            <a class="Title" href="https://github.com/onsightengine/eyegl">EyeGL</a>
+            <div class="Section">Geometry</div>
+            <a class="Example" href="geometry/base-primitives.html">Base Primitives</a>
+            <a class="Example" href="geometry/curves.html">Curves</a>
+            <a class="Example" href="geometry/draw-modes.html">Draw Modes</a>
+            <a class="Example" href="geometry/gpu-picking.html">Gpu Picking</a>
+            <a class="Example" href="geometry/instancing.html">Instancing</a>
+            <a class="Example" href="geometry/load-gltf.html">Load GLTF</a>
+            <a class="Example" href="geometry/load-json.html">Load JSON</a>
+            <a class="Example" href="geometry/particles.html">Particles</a>
+            <a class="Example" href="geometry/wireframe.html">Wireframe</a>
+            <div class="Section">Postprocessing</div>
+            <a class="Example" href="postprocessing/full-screen-triangle.html">Full Screen Shader</a>
+        </div>
+
+        <iframe class="Iframe" allow="autoplay" src=""></iframe>
+
+        <a class="SideIcon">&lt;</a>
+        <a class="CodeIcon" href="" target="_blank">&lt;&nbsp;&#47;&nbsp;&gt;</a>
+
+        <script>
+
+            const sourceLink = document.querySelector('.CodeIcon');
+            const toggleLink = document.querySelector('.SideIcon');
+            const exampleLinks = document.querySelectorAll('a.Example');
+            const iFrame = document.querySelector('.Iframe');
+            const sourcePath = 'https://github.com/onsightengine/eyegl/tree/master/examples/';
+
+            toggleLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                document.body.toggleAttribute('data-hideSidebar');
+            });
+
+            // Load query example in iFrame if linked
+            let loadQuery = location.search.split('src=');
+            if (loadQuery[1]) {
+                iFrame.src = loadQuery[1];
+                sourceLink.href = sourcePath + loadQuery[1];
+                highlight(loadQuery[1]);
+            } else {
+                // choose random example to show if none linked
+                let target = exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
+                updateExample({ target });
+            }
+
+            exampleLinks.forEach((link) => {
+                link.addEventListener('click', updateExample, false);
+            });
+
+            function updateExample(event) {
+                let src = event.target.href.split('examples/')[1];
+
+                // Allow user to cmd/ctrl + click to open in new tab
+                if (event.metaKey) {
+                    window.open(`${location.origin}${location.pathname}?src=${src}`, '_blank');
+                    return;
+                }
+
+                iFrame.src = event.target.href;
+                sourceLink.href = sourcePath + src;
+                highlight(src);
+
+                // Update search query
+                history.pushState(null, null, `${location.origin}${location.pathname}?src=${src}`);
+                event.preventDefault && event.preventDefault();
+            }
+
+            // Highlight and update others
+            function highlight(src) {
+                exampleLinks.forEach((link) => {
+                    let linkSrc = link.href.split('examples/')[1];
+                    if (src === linkSrc) link.classList.add('active');
+                    else link.classList.remove('active');
+                });
+            }
+
+        </script>
+    </body>
+</html>
