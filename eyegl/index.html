@@ -51,7 +51,9 @@
                 sourceLink.href = sourcePath + loadQuery[1];
                 highlight(loadQuery[1]);
             } else {
-                // choose random example to show if none linked
+                // // default
+                // let target = document.querySelector('#default');
+                // // or, choose random example to show if none linked
                 let target = exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
                 updateExample({ target });
             }
