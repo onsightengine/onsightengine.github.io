@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>EyeGL • Billboards</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+        <link rel="icon" type="image/png" href="../../files/logo/favicon.png" />
+        <link href="../main.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="Info">Billboards</div>
+        <div class="Credits"></div>
+
+        <script language="JavaScript" src="../imports.js"></script>
+
+        <script type="module">
+            import {
+                Camera, Orbit,
+                Color,
+                Mesh,
+                Plane,
+                Program,
+                Renderer,
+                Sprite,
+                Texture,
+                Transform,
+            } from 'eyegl';
+
+            import { Gooey } from 'osui';
+
+            const renderer = new Renderer({});
+            const gl = renderer.gl;
+            document.body.appendChild(gl.canvas);
+
+            const camera = new Camera({ fov: 35 });
+            camera.position.set(20, 20, -40);
+            camera.lookAt([0, 0, 0]);
+
+            const controls = new Orbit(camera);
+
+            function resize() {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.perspective({ aspect: gl.canvas.width / gl.canvas.height });
+            }
+            window.addEventListener('resize', resize, false);
+            resize();
+
+            const params = {
+                count: 1000,
+            };
+
+            const gui = new Gooey();
+            const folder1 = gui.addFolder('Parameters');
+            folder1.add(params, 'count', 0, 10000, 100, 0).onChange(() => buildScene(params.count));
+
+            const dragon = new Texture({ src: '../../files/sprites/dragon.png' });
+            const unicorn = new Texture({ src: '../../files/sprites/unicorn.png' });
+            const kraken = new Texture({ src: '../../files/sprites/kraken.png' });
+
+            let scene;
+
+            function buildScene(count) {
+                scene = new Transform();
+
+                // add new meshes
+                for (let i = 0; i < count; i++) {
+                    let texture;
+                    const img = Math.floor(Math.random() * 3);
+                    switch (img) {
+                        case 0: texture = dragon; break;
+                        case 1: texture = unicorn; break;
+                        case 2: texture = kraken; break;
+                    }
+
+                    const sprite = new Sprite({ texture });
+                    sprite.position.set(
+                        (Math.random() * 20) - 10,
+                        (Math.random() * 20) - 10,
+                        (Math.random() * 20) - 10,
+                    );
+
+                    scene.addChild(sprite);
+                }
+            }
+
+            buildScene(params.count);
+
+            //
+
+            console.log(renderer.programs);
+
+            //
+
+            requestAnimationFrame(update);
+            function update() {
+                requestAnimationFrame(update);
+                controls.update();
+                renderer.render({ scene, camera });
+            }
+
+        </script>
+    </body>
+</html>

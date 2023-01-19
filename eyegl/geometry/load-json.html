@@ -12,15 +12,7 @@
         <div class="Info">Load JSON (JavaScript Object Notation)</div>
         <div class="Credits">Model by Google Poly</div>
 
-        <script async src='https://unpkg.com/es-module-shims@1.5.0/dist/es-module-shims.js'></script>
-		<script type='importmap'>
-            {
-                "imports": {
-                    "eyegl": "https://unpkg.com/eyegl@0.0.2/build/eyegl.module.js",
-                    "osui": "https://unpkg.com/@scidian/osui@0.1.4/build/osui.module.js"
-                }
-            }
-        </script>
+        <script language="JavaScript" src="../imports.js"></script>
 
         <script type="module">
             import {
@@ -57,14 +49,14 @@
                 precision highp float;
 
                 uniform float uTime;
-                uniform sampler2D tMap;
+                uniform sampler2D tDiffuse;
 
                 varying vec2 vUv;
                 varying vec3 vNormal;
 
                 void main() {
                     vec3 normal = normalize(vNormal);
-                    vec3 tex = texture2D(tMap, vUv).rgb;
+                    vec3 tex = texture2D(tDiffuse, vUv).rgb;
 
                     vec3 light = normalize(vec3(0.5, 1.0, -0.3));
                     float shading = dot(normal, light) * 0.15;
@@ -91,16 +83,13 @@
 
             const scene = new Transform();
 
-            const texture = new Texture();
-            const img = new Image();
-            img.onload = () => (texture.image = img);
-            img.src = '../../files/models/json/fox.jpg';
+            const texture = new Texture({ src: '../../files/models/json/fox.jpg' });
 
             const program = new Program({
                 vertex,
                 fragment,
                 uniforms: {
-                    tMap: { value: texture },
+                    tDiffuse: { value: texture },
                 },
             });
 

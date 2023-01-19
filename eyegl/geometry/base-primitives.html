@@ -12,15 +12,7 @@
         <div class="Info">Base Primitives</div>
         <div class="Credits" id="debugInfo" style="line-height: 150%;"></div>
 
-        <script async src='https://unpkg.com/es-module-shims@1.5.0/dist/es-module-shims.js'></script>
-		<script type='importmap'>
-            {
-                "imports": {
-                    "eyegl": "https://unpkg.com/eyegl@0.0.2/build/eyegl.module.js",
-                    "osui": "https://unpkg.com/@scidian/osui@0.1.4/build/osui.module.js"
-                }
-            }
-        </script>
+        <script language="JavaScript" src="../imports.js"></script>
 
         <script type="module">
             import {
@@ -44,7 +36,7 @@
             const meshes = {}, meshesNon = {};
 
             const params = {
-                type: 'Sphere',
+                type: 'Torus',
                 logToConsole: () => logVisibleGeometry(),
                 indexed: true,
                 flatShading: false,
@@ -56,7 +48,7 @@
                 wireIntensity: 0.0,
             }
 
-            const gui = new Gooey('Geometries');
+            const gui = new Gooey();
             const folder1 = gui.addFolder('Geometry');
             const folder2 = gui.addFolder('Material');
 
@@ -87,10 +79,7 @@
             window.addEventListener('resize', resize, false);
             resize();
 
-            const texture = new Texture();
-            const img = new Image();
-            img.onload = () => (texture.image = img);
-            img.src = '../../files/textures/uv-test-col.png';
+            const texture = new Texture({ src: '../../files/textures/uv-test-col.png' });
 
             const scene = new Transform();
             const controls = new Orbit(camera);
