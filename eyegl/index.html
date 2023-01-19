@@ -46,7 +46,7 @@
 
             // Load query example in iFrame if linked
             let loadQuery = location.search.split('src=');
-            if (loadQuery[1]) {
+            if (loadQuery[1] && loadQuery[1] !== 'undefined') {
                 iFrame.src = loadQuery[1];
                 sourceLink.href = sourcePath + loadQuery[1];
                 highlight(loadQuery[1]);
@@ -81,7 +81,7 @@
             // Highlight and update others
             function highlight(src) {
                 exampleLinks.forEach((link) => {
-                    let linkSrc = link.href.split('examples/')[1];
+                    let linkSrc = link.href.split('eyegl/')[1];
                     if (src === linkSrc) link.classList.add('active');
                     else link.classList.remove('active');
                 });
