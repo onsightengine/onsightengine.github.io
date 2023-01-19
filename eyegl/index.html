@@ -13,7 +13,8 @@
         <div class="Side">
             <a class="Title" href="https://github.com/onsightengine/eyegl">EyeGL</a>
             <div class="Section">Geometry</div>
-            <a class="Example" href="geometry/base-primitives.html">Base Primitives</a>
+            <a class="Example" href="geometry/base-primitives.html" id="default">Base Primitives</a>
+            <a class="Example" href="geometry/billboards.html">Billboards</a>
             <a class="Example" href="geometry/curves.html">Curves</a>
             <a class="Example" href="geometry/draw-modes.html">Draw Modes</a>
             <a class="Example" href="geometry/gpu-picking.html">Gpu Picking</a>
@@ -22,8 +23,14 @@
             <a class="Example" href="geometry/load-json.html">Load JSON</a>
             <a class="Example" href="geometry/particles.html">Particles</a>
             <a class="Example" href="geometry/wireframe.html">Wireframe</a>
+            <div class="Section">Framebuffer</div>
+            <a class="Example" href="framebuffer/render-to-texture.html">Render to Texture</a>
             <div class="Section">Postprocessing</div>
             <a class="Example" href="postprocessing/full-screen-triangle.html">Full Screen Shader</a>
+            <div class="Section">Renderer</div>
+            <a class="Example" href="renderer/capabilities.html">Capabilities</a>
+            <div class="Section">Shader - Standard</div>
+            <a class="Example" href="standard/normal-map.html">Normal Map</a>
         </div>
 
         <iframe class="Iframe" allow="autoplay" src=""></iframe>
@@ -51,11 +58,11 @@
                 sourceLink.href = sourcePath + loadQuery[1];
                 highlight(loadQuery[1]);
             } else {
-                // // default
-                // let target = document.querySelector('#default');
+                // default
+                let target = document.querySelector('#default');
                 // // or, choose random example to show if none linked
-                let target = exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
-                updateExample({ target });
+                // let target = exampleLinks[Math.floor(Math.random() * exampleLinks.length)];
+                updateExample({ target: document.querySelector('#default') });
             }
 
             exampleLinks.forEach((link) => {
@@ -63,7 +70,7 @@
             });
 
             function updateExample(event) {
-                let src = event.target.href.split('eyegl/')[1];
+                let src = event.target.href.split('examples/')[1];
 
                 // Allow user to cmd/ctrl + click to open in new tab
                 if (event.metaKey) {
@@ -83,7 +90,7 @@
             // Highlight and update others
             function highlight(src) {
                 exampleLinks.forEach((link) => {
-                    let linkSrc = link.href.split('eyegl/')[1];
+                    let linkSrc = link.href.split('examples/')[1];
                     if (src === linkSrc) link.classList.add('active');
                     else link.classList.remove('active');
                 });
